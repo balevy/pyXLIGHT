@@ -101,7 +101,12 @@ class xfoilAnalysis:
         xfoil.cr09.minf1 = self.mach  # Mach Number set
         xfoil.ci04.itmax = self.iter  # Iterations Limit Set
         xfoil.cr09.adeg = angle
+        
         xfoil.oper()
+        
+        if xfoil.cl01.lvisc and not xfoil.cl01.lpacc and not xfoil.cl01.lvconv:
+            print("xfoil didn't converge")    
+        
         return xfoil.cr09.cl, xfoil.cr09.cd, xfoil.cr09.cm, xfoil.cl01.lexitflag
 
     def solveAlphaComplex(self, angle):
@@ -112,6 +117,10 @@ class xfoilAnalysis:
         xfoil_cs.ci04.itmax = self.iter  # Iterations Limit Set
         xfoil_cs.cr09.adeg = angle
         xfoil_cs.oper()
+        
+        if xfoil.cl01.lvisc and not xfoil.cl01.lpacc and not xfoil.cl01.lvconv:
+            print("xfoil didn't converge")    
+        
         return xfoil_cs.cr09.cl, xfoil_cs.cr09.cd, xfoil_cs.cr09.cm, xfoil_cs.cl01.lexitflag
 
     def setValue(self, common_block, variable, value):
