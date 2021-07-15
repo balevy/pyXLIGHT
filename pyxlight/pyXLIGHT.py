@@ -132,7 +132,15 @@ class xfoilAnalysis:
         # actually exists. These modules work such that you can
         # dynamically create new attributes thus if the varibale
         # doesn't exist it is just created...which is not what we want
-        exec("has_attribute = hasattr(xfoil.%s,'%s')" % (common_block, variable))
+        def hasattrdeep():
+            obj = xfoil
+            for attr in [common_block, variable]:
+                if not hasattr(obj, attr):
+                    return False
+                obj = getattr(obj, attr)
+            return True
+        has_attribute = hasattrdeep()
+
         if has_attribute:  # NOQA: F821
             # Now we can set it
             exec("xfoil.%s.%s = value" % (common_block, variable))
@@ -151,7 +159,15 @@ class xfoilAnalysis:
         # actually exists. These modules work such that you can
         # dynamically create new attributes thus if the varibale
         # doesn't exist it is just created...which is not what we want
-        exec("has_attribute = hasattr(xfoil_cs.%s,'%s')" % (common_block, variable))
+        def hasattrdeep():
+            obj = xfoil
+            for attr in [common_block, variable]:
+                if not hasattr(obj, attr):
+                    return False
+                obj = getattr(obj, attr)
+            return True
+        has_attribute = hasattrdeep()
+        
         if has_attribute:  # NOQA: F821
             # Now we can set it
             exec("xfoil_cs.%s.%s = value" % (common_block, variable))
